@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survey Results</title>
+  <style>
+    :root {
+      --bg: #f0ebf8;
+      --card: #ffffff;
+      --ink: #202124;
+      --muted: #5f6368;
+      --line: #dadce0;
+      --purple: #673ab7;
+      --purple-dark: #5b34a4;
+      --purple-soft: #f3edff;
+      --green: #188038;
+      --error: #d93025;
+      --shadow: 0 1px 2px rgba(60, 64, 67, 0.15), 0 2px 6px rgba(60, 64, 67, 0.12);
+      --radius: 8px;
+      --font: "Google Sans", "Roboto", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 24px auto 56px;
+      padding: 0 16px;
+    }
+
+    .header-card,
+    .login-card,
+    .panel-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header-topbar {
+      height: 10px;
+      background: var(--purple);
+    }
+
+    .header-main {
+      padding: 20px 24px 0;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .title-wrap h1 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .title-wrap p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .language-switch {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .language-switch button,
+    .tab-btn,
+    .primary-btn,
+    .text-btn,
+    .ghost-btn {
+      border: none;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .language-switch button {
+      padding: 8px 14px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .language-switch button.active {
+      background: var(--purple-soft);
+      color: var(--purple-dark);
+      font-weight: 500;
+    }
+
+    .ghost-btn,
+    .primary-btn,
+    .text-btn,
+    .toolbar-link {
+      border-radius: 4px;
+      padding: 9px 14px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .ghost-btn,
+    .toolbar-link {
+      background: transparent;
+      color: var(--purple);
+    }
+
+    .primary-btn {
+      background: var(--purple);
+      color: #fff;
+    }
+
+    .text-btn {
+      background: transparent;
+      color: var(--purple);
+    }
+
+    .response-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--purple-soft);
+      color: var(--purple-dark);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 24px;
+      padding: 0 24px;
+      border-top: 1px solid var(--line);
+      margin-top: 18px;
+    }
+
+    .tab-btn {
+      padding: 14px 0 12px;
+      background: transparent;
+      color: var(--muted);
+      border-bottom: 3px solid transparent;
+      font-weight: 500;
+    }
+
+    .tab-btn.active {
+      color: var(--purple);
+      border-bottom-color: var(--purple);
+    }
+
+    .content {
+      margin-top: 18px;
+      display: none;
+    }
+
+    .content.show {
+      display: block;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .summary-card span {
+      display: block;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 400;
+    }
+
+    .summary-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 12px;
+    }
+
+    .section-label {
+      margin: 20px 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .question-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      padding: 18px 20px;
+    }
+
+    .question-card h3 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.55;
+    }
+
+    .question-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .bar-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .bar-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #ece6f6;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--purple);
+    }
+
+    .text-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .text-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #fff;
+    }
+
+    .text-item strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .text-item p {
+      margin: 0;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+
+    .control-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .control-row select {
+      flex: 1;
+      min-width: 0;
+      padding: 11px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .individual-card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .individual-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .individual-header h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .individual-header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
+    .answer-list {
+      padding: 0 20px;
+    }
+
+    .answer-item {
+      padding: 18px 0;
+      border-bottom: 1px solid #eceff1;
+    }
+
+    .answer-item:last-child {
+      border-bottom: none;
+    }
+
+    .answer-item strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .answer-item div {
+      color: var(--ink);
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    .login-card {
+      max-width: 440px;
+      margin: 28px auto 0;
+      padding: 22px 24px 24px;
+    }
+
+    .login-card h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      font-weight: 400;
+    }
+
+    .login-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .field input:focus,
+    .control-row select:focus {
+      outline: none;
+      border-color: var(--purple);
+      box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.1);
+    }
+
+    .status {
+      min-height: 20px;
+      margin: 10px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .status.error {
+      color: var(--error);
+    }
+
+    .status.success {
+      color: var(--green);
+    }
+
+    .empty {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        margin-top: 16px;
+        padding: 0 10px 32px;
+      }
+
+      .header-main,
+      .tabs,
+      .login-card,
+      .question-card,
+      .individual-header,
+      .answer-list {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .header-row,
+      .tools,
+      .control-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .tools {
+        justify-content: flex-start;
+      }
+
+      .summary-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="header-card">
+      <div class="header-topbar"></div>
+      <div class="header-main">
+        <div class="header-row">
+          <div class="title-wrap">
+            <h1 id="pageTitle"></h1>
+            <p id="pageSubtitle"></p>
+            <div class="response-chip" id="responseChip"></div>
+          </div>
+          <div class="tools">
+            <div class="language-switch">
+              <button type="button" data-lang="en" class="active">English</button>
+              <button type="button" data-lang="vi">Tiếng Việt</button>
+            </div>
+            <button type="button" class="ghost-btn" id="refreshBtn"></button>
+            <button type="button" class="ghost-btn" id="logoutBtn"></button>
+            <a class="toolbar-link" href="index.html" id="surveyLink"></a>
+          </div>
+        </div>
+      </div>
+      <div class="tabs" id="tabs" style="display:none;">
+        <button type="button" class="tab-btn active" data-view="summary" id="tabSummary"></button>
+        <button type="button" class="tab-btn" data-view="question" id="tabQuestion"></button>
+        <button type="button" class="tab-btn" data-view="individual" id="tabIndividual"></button>
+      </div>
+    </section>
+
+    <section class="login-card" id="loginCard">
+      <h2 id="loginTitle"></h2>
+      <p id="loginText"></p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="username" id="usernameLabel"></label>
+          <input id="username" name="username" type="text" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password" id="passwordLabel"></label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="primary-btn" id="loginBtn"></button>
+        <div class="status" id="loginStatus" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section id="dashboardShell" style="display:none;">
+      <div class="summary-row" id="summaryRow"></div>
+
+      <section class="content show" id="summaryView"></section>
+
+      <section class="content" id="questionView">
+        <div class="panel-card" style="padding:16px 18px; margin-bottom:16px;">
+          <div class="control-row">
+            <select id="questionSelect"></select>
+          </div>
+        </div>
+        <div id="questionDetailMount"></div>
+      </section>
+
+      <section class="content" id="individualView">
+        <div class="panel-card" style="padding:16px 18px; margin-bottom:16px;">
+          <div class="control-row">
+            <select id="responseSelect"></select>
+          </div>
+        </div>
+        <div id="individualDetailMount"></div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const UI = {
+      en: {
+        title: "Adaptive Reading App for Children with ASD - Responses",
+        subtitle: "Survey analytics and individual responses",
+        responseChip: "Responses",
+        refresh: "Refresh",
+        logout: "Log out",
+        surveyLink: "Open survey",
+        tabs: {
+          summary: "Summary",
+          question: "Question",
+          individual: "Individual"
+        },
+        login: {
+          title: "Admin sign in",
+          text: "Sign in with the admin account to view response summaries and individual submissions.",
+          username: "Username",
+          password: "Password",
+          button: "Sign in",
+          loading: "Signing in...",
+          failed: "Invalid admin username or password.",
+          loggedOut: "You have been logged out."
+        },
+        states: {
+          loading: "Loading results...",
+          dashboardFailed: "Could not load results right now.",
+          noResponses: "No responses yet.",
+          noQuestionData: "No responses for this question yet."
+        },
+        summary: {
+          total: "Total responses",
+          parent: "Parent route",
+          teacher: "Teacher / specialist route",
+          general: "General route"
+        },
+        meta: {
+          responses: "responses",
+          updated: "Updated",
+          averageAge: "Average age",
+          average: "Average",
+          route: "Route",
+          language: "Language",
+          submitted: "Submitted",
+          response: "Response"
+        },
+        sections: {
+          basic: "Basic information",
+          shared: "Shared questions",
+          parent: "Parent-only questions",
+          teacher: "Teacher-only questions",
+          general: "General-only questions",
+          feedback: "Open-ended responses"
+        },
+        routes: {
+          parent: "Parent / caregiver",
+          teacher: "Teacher / specialist",
+          general: "General interest / other"
+        },
+        roles: {
+          parent_caregiver: "Parent / primary caregiver",
+          teacher_educator: "Teacher / educator",
+          therapist_specialist: "Therapist / specialist",
+          family_member: "Family member (not parent)",
+          friend_acquaintance: "Friend / acquaintance",
+          student_researcher: "Student / researcher",
+          general_interest: "Generally interested",
+          other: "Other"
+        },
+        genders: {
+          male: "Male",
+          female: "Female",
+          prefer_not_say: "Prefer not to say",
+          other: "Other"
+        },
+        questions: {
+          basic_name: "1. Name",
+          basic_gender: "2. Gender",
+          basic_age: "3. Age",
+          basic_role: "4. Relationship to children with ASD",
+          parent_material_frequency: "How often do you use book-based or visual reading materials in your interactions with the child?",
+          teacher_material_frequency: "How often do you use book-based or visual reading materials in your work with children with ASD?",
+          teacher_best_book_type: "From your experience, which type of books currently works best for children with ASD?",
+          common_transition_shift: "During observation or play, when the child is asked to shift from the object or activity they are currently engaged with to a different one, the child tends to:",
+          common_attention_style: "During observation or play, when looking at or interacting with objects or people, the child usually:",
+          parent_interactive_books_effectiveness: "Based on your experience, how effective do you think interactive picture books could be in improving the child's attention during reading activities?",
+          parent_scan_time: "For a scan-to-adapt feature, what is the maximum acceptable processing time per page?",
+          parent_track_data: "In Parent Mode, what data would be most important for you to track?",
+          common_necessity: "In your opinion, how necessary is it to adapt picture books specifically for children with ASD?",
+          general_app_usefulness: "If an app could adapt any physical children's book into a simplified, autism-friendly interactive experience, how useful would that be?",
+          common_outcome: "Which outcome matters most?",
+          parent_visual_settings_importance: "On a scale of 1 to 5, how important is it to manually adjust visual settings for each book?",
+          common_trust_factors: "What would make you trust this tool?",
+          common_monthly_price: "If this app were offered as a monthly subscription, how much would you be willing to pay per month?",
+          parent_open_feedback: "Parent route: What would make an app like this truly helpful or worth using for you or the children/families you work with?",
+          teacher_open_feedback: "Teacher route: What would make an app like this truly helpful or worth using for you or the children/families you work with?",
+          general_open_feedback: "General route: What would make an app like this truly helpful or worth using for you or the children/families you work with?"
+        }
+      },
+      vi: {
+        title: "Ứng dụng đọc thích ứng cho trẻ em mắc ASD - Kết quả khảo sát",
+        subtitle: "Thống kê khảo sát và từng câu trả lời",
+        responseChip: "Phản hồi",
+        refresh: "Làm mới",
+        logout: "Đăng xuất",
+        surveyLink: "Mở khảo sát",
+        tabs: {
+          summary: "Tổng quan",
+          question: "Câu hỏi",
+          individual: "Từng phản hồi"
+        },
+        login: {
+          title: "Đăng nhập quản trị",
+          text: "Đăng nhập bằng tài khoản admin để xem thống kê và từng phản hồi riêng lẻ.",
+          username: "Tên đăng nhập",
+          password: "Mật khẩu",
+          button: "Đăng nhập",
+          loading: "Đang đăng nhập...",
+          failed: "Sai tên đăng nhập hoặc mật khẩu admin.",
+          loggedOut: "Bạn đã đăng xuất."
+        },
+        states: {
+          loading: "Đang tải kết quả...",
+          dashboardFailed: "Hiện chưa thể tải kết quả.",
+          noResponses: "Chưa có phản hồi nào.",
+          noQuestionData: "Chưa có dữ liệu cho câu hỏi này."
+        },
+        summary: {
+          total: "Tổng phản hồi",
+          parent: "Nhánh phụ huynh",
+          teacher: "Nhánh giáo viên / chuyên gia",
+          general: "Nhánh quan tâm chung"
+        },
+        meta: {
+          responses: "phản hồi",
+          updated: "Cập nhật",
+          averageAge: "Tuổi trung bình",
+          average: "Trung bình",
+          route: "Nhánh",
+          language: "Ngôn ngữ",
+          submitted: "Thời gian gửi",
+          response: "Phản hồi"
+        },
+        sections: {
+          basic: "Thông tin cơ bản",
+          shared: "Câu hỏi dùng chung",
+          parent: "Câu hỏi riêng cho phụ huynh",
+          teacher: "Câu hỏi riêng cho giáo viên / chuyên gia",
+          general: "Câu hỏi riêng cho nhóm quan tâm chung",
+          feedback: "Câu trả lời mở"
+        },
+        routes: {
+          parent: "Phụ huynh / người chăm sóc",
+          teacher: "Giáo viên / chuyên gia",
+          general: "Quan tâm chung / khác"
+        },
+        roles: {
+          parent_caregiver: "Phụ huynh / người chăm sóc chính",
+          teacher_educator: "Giáo viên / nhà giáo dục",
+          therapist_specialist: "Nhà trị liệu / chuyên gia",
+          family_member: "Thành viên gia đình (không phải phụ huynh)",
+          friend_acquaintance: "Bạn / người quen",
+          student_researcher: "Sinh viên / nhà nghiên cứu",
+          general_interest: "Người quan tâm chung",
+          other: "Khác"
+        },
+        genders: {
+          male: "Nam",
+          female: "Nữ",
+          prefer_not_say: "Không muốn tiết lộ",
+          other: "Khác"
+        },
+        questions: {
+          basic_name: "1. Họ và tên",
+          basic_gender: "2. Giới tính",
+          basic_age: "3. Tuổi",
+          basic_role: "4. Mối quan hệ với trẻ mắc ASD",
+          parent_material_frequency: "Bạn sử dụng sách hoặc tài liệu đọc trực quan trong quá trình tương tác với trẻ thường xuyên như thế nào?",
+          teacher_material_frequency: "Bạn sử dụng sách hoặc tài liệu đọc trực quan trong công việc với trẻ mắc ASD thường xuyên như thế nào?",
+          teacher_best_book_type: "Theo kinh nghiệm của bạn, loại sách nào hiện đang phù hợp nhất với trẻ mắc ASD?",
+          common_transition_shift: "Trong quá trình quan sát và chơi với bé, khi bé được yêu cầu chuyển từ món đồ vật hoặc hoạt động đang tham gia sang một món khác, bé có xu hướng:",
+          common_attention_style: "Trong quá trình quan sát và chơi với bé, khi nhìn hoặc tương tác với đồ vật hoặc con người, bé thường:",
+          parent_interactive_books_effectiveness: "Dựa trên kinh nghiệm của bạn, bạn đánh giá sách tranh tương tác có thể hiệu quả đến mức nào trong việc cải thiện sự chú ý của trẻ trong các hoạt động đọc?",
+          parent_scan_time: "Với tính năng quét để thích ứng, thời gian xử lý tối đa chấp nhận được cho mỗi trang là bao lâu?",
+          parent_track_data: "Trong chế độ Phụ huynh, dữ liệu nào là quan trọng nhất để bạn theo dõi?",
+          common_necessity: "Theo bạn, việc điều chỉnh sách tranh để phù hợp riêng với trẻ mắc ASD cần thiết đến mức nào?",
+          general_app_usefulness: "Nếu một ứng dụng có thể chuyển đổi bất kỳ cuốn sách thiếu nhi bản giấy nào thành trải nghiệm tương tác đơn giản, thân thiện với trẻ tự kỷ, điều đó sẽ hữu ích đến mức nào?",
+          common_outcome: "Kết quả nào quan trọng nhất?",
+          parent_visual_settings_importance: "Trên thang điểm từ 1 đến 5, việc tự điều chỉnh cài đặt hiển thị cho từng cuốn sách quan trọng đến mức nào?",
+          common_trust_factors: "Điều gì sẽ khiến bạn tin tưởng công cụ này?",
+          common_monthly_price: "Nếu ứng dụng này được cung cấp theo hình thức đăng ký hàng tháng, bạn sẵn sàng chi trả bao nhiêu mỗi tháng?",
+          parent_open_feedback: "Nhánh phụ huynh: Điều gì sẽ khiến một ứng dụng như vậy thực sự hữu ích hoặc đáng để bạn sử dụng, hoặc dành cho trẻ / gia đình mà bạn làm việc cùng?",
+          teacher_open_feedback: "Nhánh giáo viên / chuyên gia: Điều gì sẽ khiến một ứng dụng như vậy thực sự hữu ích hoặc đáng để bạn sử dụng, hoặc dành cho trẻ / gia đình mà bạn làm việc cùng?",
+          general_open_feedback: "Nhánh quan tâm chung: Điều gì sẽ khiến một ứng dụng như vậy thực sự hữu ích hoặc đáng để bạn sử dụng, hoặc dành cho trẻ / gia đình mà bạn làm việc cùng?"
+        }
+      }
+    };
+
+    const OPTION_SETS = {
+      gender: {
+        male: { en: "Male", vi: "Nam" },
+        female: { en: "Female", vi: "Nữ" },
+        prefer_not_say: { en: "Prefer not to say", vi: "Không muốn tiết lộ" },
+        other: { en: "Other", vi: "Khác" }
+      },
+      role: {
+        parent_caregiver: { en: "Parent / primary caregiver", vi: "Phụ huynh / người chăm sóc chính" },
+        teacher_educator: { en: "Teacher / educator", vi: "Giáo viên / nhà giáo dục" },
+        therapist_specialist: { en: "Therapist / specialist", vi: "Nhà trị liệu / chuyên gia" },
+        family_member: { en: "Family member (not parent)", vi: "Thành viên gia đình (không phải phụ huynh)" },
+        friend_acquaintance: { en: "Friend / acquaintance", vi: "Bạn / người quen" },
+        student_researcher: { en: "Student / researcher", vi: "Sinh viên / nhà nghiên cứu" },
+        general_interest: { en: "Generally interested", vi: "Người quan tâm chung" },
+        other: { en: "Other", vi: "Khác" }
+      },
+      frequency: {
+        daily: { en: "Daily", vi: "Hàng ngày" },
+        few_times_week: { en: "A few times a week", vi: "Vài lần mỗi tuần" },
+        occasionally: { en: "Occasionally", vi: "Thỉnh thoảng" },
+        rarely: { en: "Rarely", vi: "Hiếm khi" },
+        never: { en: "Never", vi: "Không bao giờ" }
+      },
+      transitionShift: {
+        easy_shift: { en: "Easily shifts to the new activity", vi: "Dễ dàng chuyển sang hoạt động mới" },
+        slow_shift_needs_prompt: { en: "Shifts slowly or needs prompting", vi: "Chuyển chậm hoặc cần nhắc" },
+        hard_to_leave_old: { en: "Has difficulty leaving the previous activity", vi: "Khó rời khỏi hoạt động cũ" },
+        not_sure: { en: "Not sure", vi: "Không chắc" }
+      },
+      attentionStyle: {
+        balanced_attention: { en: "Pays balanced attention to the overall scene and important details, including faces", vi: "Chú ý cân bằng giữa tổng thể và các chi tiết quan trọng, bao gồm cả khuôn mặt" },
+        slight_detail_bias: { en: "Slightly focuses on small details but still notices important elements", vi: "Hơi thiên về chi tiết nhỏ nhưng vẫn nhận ra các yếu tố quan trọng" },
+        mostly_small_details: { en: "Mainly focuses on small details, pays little attention to the overall scene, and often misses important elements such as faces or facial expressions", vi: "Chủ yếu tập trung vào chi tiết nhỏ, ít chú ý đến tổng thể và thường bỏ qua các yếu tố quan trọng như khuôn mặt hoặc biểu cảm" },
+        not_sure: { en: "Not sure", vi: "Không chắc" }
+      },
+      effectiveness: {
+        extremely_effective: { en: "Extremely effective", vi: "Cực kỳ hiệu quả" },
+        very_effective: { en: "Very effective", vi: "Rất hiệu quả" },
+        moderately_effective: { en: "Moderately effective", vi: "Hiệu quả ở mức vừa phải" },
+        slightly_effective: { en: "Slightly effective", vi: "Hơi hiệu quả" },
+        not_effective: { en: "Not effective at all", vi: "Hoàn toàn không hiệu quả" },
+        not_sure: { en: "Not sure", vi: "Không chắc" }
+      },
+      scanTime: {
+        instant: { en: "Instant (1-2 seconds)", vi: "Gần như ngay lập tức (1-2 giây)" },
+        under_5_seconds: { en: "Under 5 seconds", vi: "Dưới 5 giây" },
+        under_10_seconds: { en: "Under 10 seconds", vi: "Dưới 10 giây" },
+        under_20_seconds: { en: "Under 20 seconds", vi: "Dưới 20 giây" },
+        wait_for_quality: { en: "I can wait longer if the result is high quality", vi: "Tôi có thể chờ lâu hơn nếu kết quả có chất lượng cao" }
+      },
+      trackData: {
+        time_focused: { en: "Time spent focused", vi: "Thời gian tập trung" },
+        pages_completed: { en: "Pages completed", vi: "Số trang đã hoàn thành" },
+        vocabulary_mastered: { en: "Vocabulary mastered", vi: "Từ vựng đã nắm được" },
+        sensory_triggers_identified: { en: "Sensory triggers identified", vi: "Tác nhân kích thích giác quan đã xác định" },
+        preferred_objects_topics: { en: "Preferred objects/topics", vi: "Đồ vật / chủ đề yêu thích" },
+        repeated_prompts_needed: { en: "Repeated prompts needed", vi: "Số lần cần nhắc lại" }
+      },
+      necessity: {
+        extremely_necessary: { en: "Extremely necessary", vi: "Cực kỳ cần thiết" },
+        very_necessary: { en: "Very necessary", vi: "Rất cần thiết" },
+        somewhat_necessary: { en: "Somewhat necessary", vi: "Khá cần thiết" },
+        slightly_necessary: { en: "Slightly necessary", vi: "Hơi cần thiết" },
+        not_necessary: { en: "Not necessary at all", vi: "Hoàn toàn không cần thiết" }
+      },
+      appUsefulness: {
+        extremely_useful: { en: "Extremely useful", vi: "Cực kỳ hữu ích" },
+        very_useful: { en: "Very useful", vi: "Rất hữu ích" },
+        somewhat_useful: { en: "Somewhat useful", vi: "Khá hữu ích" },
+        slightly_useful: { en: "Slightly useful", vi: "Hơi hữu ích" },
+        not_useful: { en: "Not useful at all", vi: "Hoàn toàn không hữu ích" }
+      },
+      outcome: {
+        longer_attention: { en: "Longer attention span during reading", vi: "Tăng thời gian tập trung khi đọc" },
+        better_understanding: { en: "Better understanding of story objects or concepts", vi: "Hiểu tốt hơn về đồ vật hoặc khái niệm trong câu chuyện" },
+        reduced_frustration: { en: "Reduced frustration during reading", vi: "Giảm khó chịu trong quá trình đọc" },
+        easier_shared_reading: { en: "Easier shared reading with caregivers, educators, or facilitators", vi: "Dễ dàng đọc cùng với người chăm sóc, giáo viên hoặc người hỗ trợ hơn" },
+        better_language: { en: "Better language or vocabulary reinforcement", vi: "Củng cố ngôn ngữ hoặc từ vựng tốt hơn" }
+      },
+      trust: {
+        custom_sensory_settings: { en: "Customizable sensory settings", vi: "Cài đặt cảm giác có thể tùy chỉnh" },
+        clear_progress_tracking: { en: "Clear progress tracking", vi: "Theo dõi tiến độ rõ ràng" },
+        fast_scan_processing: { en: "Very fast scan processing", vi: "Tốc độ quét và xử lý rất nhanh" },
+        works_with_existing_books: { en: "Works with books children or families already use", vi: "Hoạt động với những cuốn sách trẻ hoặc gia đình đã sử dụng" },
+        calm_simple_interface: { en: "Calm and simple child-friendly interface", vi: "Giao diện đơn giản, nhẹ nhàng, thân thiện với trẻ" },
+        affordable_practical_pricing: { en: "Affordable or practical pricing", vi: "Mức giá hợp lý, dễ tiếp cận" },
+        professional_recommendations: { en: "Evidence or recommendations from professionals", vi: "Bằng chứng hoặc khuyến nghị từ chuyên gia" }
+      },
+      pricing: {
+        less_than_100k: { en: "Less than 100,000 VND / month", vi: "Dưới 100.000 VND / tháng" },
+        vnd_100k_200k: { en: "100,000-200,000 VND / month", vi: "100.000-200.000 VND / tháng" },
+        vnd_200k_500k: { en: "200,000-500,000 VND / month", vi: "200.000-500.000 VND / tháng" },
+        more_than_500k: { en: "More than 500,000 VND / month", vi: "Trên 500.000 VND / tháng" },
+        only_if_free: { en: "I would only use it if it were free", vi: "Tôi chỉ sử dụng nếu ứng dụng miễn phí" }
+      },
+      teacherBookType: {
+        simple_picture_books: { en: "Simple picture books with one clear object or focus", vi: "Sách tranh đơn giản với một đối tượng hoặc trọng tâm rõ ràng" },
+        repetitive_predictable_stories: { en: "Repetitive or predictable stories", vi: "Câu chuyện lặp lại hoặc dễ đoán" },
+        social_stories: { en: "Social stories", vi: "Câu chuyện xã hội" },
+        sensory_audio_books: { en: "Books with sensory or audio elements", vi: "Sách có yếu tố cảm giác hoặc âm thanh" },
+        digital_interactive_books: { en: "Digital interactive books", vi: "Sách tương tác kỹ thuật số" },
+        depends_on_child: { en: "It depends on the individual child", vi: "Tùy vào từng trẻ cụ thể" },
+        physical_picture_books: { en: "Physical picture books", vi: "Sách tranh bản giấy" },
+        not_sure: { en: "Not sure", vi: "Không chắc" }
+      },
+      scale15: {
+        1: { en: "1", vi: "1" },
+        2: { en: "2", vi: "2" },
+        3: { en: "3", vi: "3" },
+        4: { en: "4", vi: "4" },
+        5: { en: "5", vi: "5" }
+      }
+    };
+
+    const QUESTION_META = {
+      basic_name: { source: "response_text", field: "name" },
+      basic_gender: { source: "response_single", field: "genderKey", optionsKey: "gender" },
+      basic_age: { source: "response_text", field: "age", isAge: true },
+      basic_role: { source: "response_single", field: "roleKey", optionsKey: "role" },
+      parent_material_frequency: { source: "question", type: "single", optionsKey: "frequency" },
+      teacher_material_frequency: { source: "question", type: "single", optionsKey: "frequency" },
+      teacher_best_book_type: { source: "question", type: "single", optionsKey: "teacherBookType" },
+      common_transition_shift: { source: "question", type: "single", optionsKey: "transitionShift" },
+      common_attention_style: { source: "question", type: "single", optionsKey: "attentionStyle" },
+      parent_interactive_books_effectiveness: { source: "question", type: "single", optionsKey: "effectiveness" },
+      parent_scan_time: { source: "question", type: "single", optionsKey: "scanTime" },
+      parent_track_data: { source: "question", type: "multi", optionsKey: "trackData" },
+      common_necessity: { source: "question", type: "single", optionsKey: "necessity" },
+      general_app_usefulness: { source: "question", type: "single", optionsKey: "appUsefulness" },
+      common_outcome: { source: "question", type: "single", optionsKey: "outcome" },
+      parent_visual_settings_importance: { source: "question", type: "scale", optionsKey: "scale15" },
+      common_trust_factors: { source: "question", type: "multi", optionsKey: "trust" },
+      common_monthly_price: { source: "question", type: "single", optionsKey: "pricing" },
+      parent_open_feedback: { source: "question", type: "text" },
+      teacher_open_feedback: { source: "question", type: "text" },
+      general_open_feedback: { source: "question", type: "text" }
+    };
+
+    const SECTIONS = [
+      { key: "basic", ids: ["basic_name", "basic_gender", "basic_age", "basic_role"] },
+      { key: "shared", ids: ["common_transition_shift", "common_attention_style", "common_necessity", "common_outcome", "common_trust_factors", "common_monthly_price"] },
+      { key: "parent", ids: ["parent_material_frequency", "parent_interactive_books_effectiveness", "parent_scan_time", "parent_track_data", "parent_visual_settings_importance"] },
+      { key: "teacher", ids: ["teacher_material_frequency", "teacher_best_book_type"] },
+      { key: "general", ids: ["general_app_usefulness"] },
+      { key: "feedback", ids: ["parent_open_feedback", "teacher_open_feedback", "general_open_feedback"] }
+    ];
+
+    const RESPONSE_ORDER = {
+      parent: ["basic_name", "basic_gender", "basic_age", "basic_role", "parent_material_frequency", "common_transition_shift", "common_attention_style", "parent_interactive_books_effectiveness", "parent_scan_time", "parent_track_data", "common_necessity", "common_outcome", "parent_visual_settings_importance", "common_trust_factors", "common_monthly_price", "parent_open_feedback"],
+      teacher: ["basic_name", "basic_gender", "basic_age", "basic_role", "teacher_material_frequency", "teacher_best_book_type", "common_transition_shift", "common_attention_style", "common_necessity", "common_outcome", "common_trust_factors", "common_monthly_price", "teacher_open_feedback"],
+      general: ["basic_name", "basic_gender", "basic_age", "basic_role", "common_transition_shift", "common_attention_style", "common_necessity", "general_app_usefulness", "common_outcome", "common_trust_factors", "common_monthly_price", "general_open_feedback"]
+    };
+
+    const ALL_QUESTION_IDS = SECTIONS.flatMap((section) => section.ids);
+
+    const CONVEX_HTTP_URL = "https://amiable-sheep-451.convex.site";
+    const ADMIN_TOKEN_KEY = "convexSurveyAdminToken";
+
+    let currentLang = "en";
+    let statsData = null;
+    let currentView = "summary";
+    let selectedQuestionId = ALL_QUESTION_IDS[0];
+    let selectedResponseId = null;
+
+    function ui(path, key) {
+      return UI[currentLang][path][key];
+    }
+
+    function questionLabel(id) {
+      return UI[currentLang].questions[id] || id;
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatDateTime(value) {
+      if (!value) return "-";
+      try {
+        return new Intl.DateTimeFormat(currentLang === "vi" ? "vi-VN" : "en-US", {
+          dateStyle: "medium",
+          timeStyle: "short"
+        }).format(new Date(value));
+      } catch (error) {
+        return value;
+      }
+    }
+
+    function formatPercent(count, total) {
+      if (!total) return "0%";
+      const value = (count / total) * 100;
+      return `${value.toFixed(value % 1 === 0 ? 0 : 1)}%`;
+    }
+
+    function translateOption(optionsKey, value) {
+      const set = OPTION_SETS[optionsKey];
+      if (!set || !set[value]) return value == null ? "-" : String(value);
+      return set[value][currentLang] || set[value].en;
+    }
+
+    function translateRoute(route) {
+      return UI[currentLang].routes[route] || route;
+    }
+
+    function setLoginStatus(message, type) {
+      const el = document.getElementById("loginStatus");
+      el.textContent = message;
+      el.className = type ? `status ${type}` : "status";
+    }
+
+    function getAdminToken() {
+      try {
+        return localStorage.getItem(ADMIN_TOKEN_KEY) || "";
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function setAdminToken(token) {
+      try {
+        localStorage.setItem(ADMIN_TOKEN_KEY, token);
+      } catch (error) {
+      }
+    }
+
+    function clearAdminToken() {
+      try {
+        localStorage.removeItem(ADMIN_TOKEN_KEY);
+      } catch (error) {
+      }
+    }
+
+    function authHeaders(extraHeaders = {}) {
+      const token = getAdminToken();
+      const headers = { ...extraHeaders };
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+      return headers;
+    }
+
+    function applyStaticText() {
+      document.getElementById("pageTitle").textContent = UI[currentLang].title;
+      document.getElementById("pageSubtitle").textContent = UI[currentLang].subtitle;
+      document.getElementById("refreshBtn").textContent = UI[currentLang].refresh;
+      document.getElementById("logoutBtn").textContent = UI[currentLang].logout;
+      document.getElementById("surveyLink").textContent = UI[currentLang].surveyLink;
+      document.getElementById("tabSummary").textContent = UI[currentLang].tabs.summary;
+      document.getElementById("tabQuestion").textContent = UI[currentLang].tabs.question;
+      document.getElementById("tabIndividual").textContent = UI[currentLang].tabs.individual;
+      document.getElementById("loginTitle").textContent = UI[currentLang].login.title;
+      document.getElementById("loginText").textContent = UI[currentLang].login.text;
+      document.getElementById("usernameLabel").textContent = UI[currentLang].login.username;
+      document.getElementById("passwordLabel").textContent = UI[currentLang].login.password;
+      document.getElementById("loginBtn").textContent = UI[currentLang].login.button;
+
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.lang === currentLang);
+      });
+    }
+
+    function getMeta(id) {
+      return QUESTION_META[id];
+    }
+
+    function buildResponseFieldText(id, stats) {
+      const meta = getMeta(id);
+      const values = (stats.responses || [])
+        .map((response) => {
+          const value = response[meta.field];
+          if (value === null || value === undefined || value === "") return null;
+          return {
+            label: meta.isAge ? String(value) : String(value),
+            submittedAt: response.submittedAt,
+            responseId: response.id
+          };
+        })
+        .filter(Boolean);
+
+      return {
+        type: "text",
+        responseCount: values.length,
+        items: values
+      };
+    }
+
+    function buildResponseFieldSingle(id, stats) {
+      const meta = getMeta(id);
+      const counts = {};
+      (stats.responses || []).forEach((response) => {
+        const value = response[meta.field];
+        if (!value) return;
+        counts[value] = (counts[value] || 0) + 1;
+      });
+
+      return {
+        type: "single",
+        responseCount: stats.totalResponses || 0,
+        optionCounts: counts,
+        optionsKey: meta.optionsKey
+      };
+    }
+
+    function getQuestionData(id, stats) {
+      const meta = getMeta(id);
+      if (!meta) return null;
+
+      if (meta.source === "response_text") {
+        return buildResponseFieldText(id, stats);
+      }
+
+      if (meta.source === "response_single") {
+        return buildResponseFieldSingle(id, stats);
+      }
+
+      const raw = stats.questions && stats.questions[id] ? stats.questions[id] : null;
+      if (!raw) {
+        return {
+          type: meta.type,
+          responseCount: 0,
+          optionCounts: {},
+          textResponses: [],
+          average: null,
+          selectionCount: 0
+        };
+      }
+
+      return {
+        type: meta.type,
+        responseCount: raw.responseCount || 0,
+        optionCounts: raw.optionCounts || {},
+        textResponses: raw.textResponses || [],
+        average: raw.average,
+        selectionCount: raw.selectionCount || 0,
+        optionsKey: meta.optionsKey
+      };
+    }
+
+    function renderBarCard(title, data) {
+      const denominator = data.responseCount || 0;
+      const optionsKey = data.optionsKey;
+      const set = OPTION_SETS[optionsKey] || {};
+      const orderedKeys = Object.keys(set);
+      const remainingKeys = Object.keys(data.optionCounts || {}).filter((key) => !orderedKeys.includes(key));
+      const keys = [...orderedKeys, ...remainingKeys].filter((key) => (data.optionCounts[key] || 0) > 0 || orderedKeys.includes(key));
+
+      if (!denominator) {
+        return `
+          <article class="question-card">
+            <h3>${escapeHtml(title)}</h3>
+            <div class="question-meta">${escapeHtml(UI[currentLang].states.noQuestionData)}</div>
+          </article>
+        `;
+      }
+
+      return `
+        <article class="question-card">
+          <h3>${escapeHtml(title)}</h3>
+          <div class="question-meta">${denominator} ${escapeHtml(UI[currentLang].meta.responses)}</div>
+          <div class="bar-list">
+            ${keys.map((key) => {
+              const count = data.optionCounts[key] || 0;
+              const percent = denominator ? (count / denominator) * 100 : 0;
+              return `
+                <div class="bar-row">
+                  <div class="bar-head">
+                    <span>${escapeHtml(translateOption(optionsKey, key))}</span>
+                    <span>${count} (${formatPercent(count, denominator)})</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill" style="width:${percent}%;"></div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderScaleCard(title, data) {
+      const denominator = data.responseCount || 0;
+      if (!denominator) {
+        return `
+          <article class="question-card">
+            <h3>${escapeHtml(title)}</h3>
+            <div class="question-meta">${escapeHtml(UI[currentLang].states.noQuestionData)}</div>
+          </article>
+        `;
+      }
+
+      return `
+        <article class="question-card">
+          <h3>${escapeHtml(title)}</h3>
+          <div class="question-meta">${denominator} ${escapeHtml(UI[currentLang].meta.responses)} | ${escapeHtml(UI[currentLang].meta.average)}: ${escapeHtml(String(data.average || "-"))}</div>
+          <div class="bar-list">
+            ${["1", "2", "3", "4", "5"].map((key) => {
+              const count = data.optionCounts[key] || 0;
+              const percent = denominator ? (count / denominator) * 100 : 0;
+              return `
+                <div class="bar-row">
+                  <div class="bar-head">
+                    <span>${key}</span>
+                    <span>${count} (${formatPercent(count, denominator)})</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill" style="width:${percent}%;"></div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderTextCard(title, data) {
+      const items = data.items || data.textResponses || [];
+      const count = data.responseCount || items.length;
+      if (!count) {
+        return `
+          <article class="question-card">
+            <h3>${escapeHtml(title)}</h3>
+            <div class="question-meta">${escapeHtml(UI[currentLang].states.noQuestionData)}</div>
+          </article>
+        `;
+      }
+
+      return `
+        <article class="question-card">
+          <h3>${escapeHtml(title)}</h3>
+          <div class="question-meta">${count} ${escapeHtml(UI[currentLang].meta.responses)}</div>
+          <div class="text-list">
+            ${items.map((item) => `
+              <div class="text-item">
+                <strong>${escapeHtml(formatDateTime(item.submittedAt || null))}</strong>
+                <p>${escapeHtml(item.label || item.text || "")}</p>
+              </div>
+            `).join("")}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderQuestionCard(id, stats) {
+      const meta = getMeta(id);
+      if (!meta) return "";
+      const data = getQuestionData(id, stats);
+      const title = questionLabel(id);
+
+      if (data.type === "text") {
+        return renderTextCard(title, data);
+      }
+
+      if (data.type === "scale") {
+        return renderScaleCard(title, data);
+      }
+
+      if (data.type === "single" || data.type === "multi") {
+        return renderBarCard(title, data);
+      }
+
+      if (data.type === "text") {
+        return renderTextCard(title, data);
+      }
+
+      return renderTextCard(title, data);
+    }
+
+    function renderSummaryCards(stats) {
+      document.getElementById("summaryRow").innerHTML = `
+        <div class="summary-card">
+          <strong>${escapeHtml(UI[currentLang].summary.total)}</strong>
+          <span>${stats.totalResponses || 0}</span>
+          <small>${escapeHtml(UI[currentLang].meta.updated)}: ${escapeHtml(formatDateTime(stats.generatedAt))}</small>
+        </div>
+        <div class="summary-card">
+          <strong>${escapeHtml(UI[currentLang].summary.parent)}</strong>
+          <span>${stats.routeCounts.parent || 0}</span>
+          <small>${escapeHtml(translateRoute("parent"))}</small>
+        </div>
+        <div class="summary-card">
+          <strong>${escapeHtml(UI[currentLang].summary.teacher)}</strong>
+          <span>${stats.routeCounts.teacher || 0}</span>
+          <small>${escapeHtml(translateRoute("teacher"))}</small>
+        </div>
+        <div class="summary-card">
+          <strong>${escapeHtml(UI[currentLang].summary.general)}</strong>
+          <span>${stats.routeCounts.general || 0}</span>
+          <small>${escapeHtml(UI[currentLang].meta.averageAge)}: ${escapeHtml(String(stats.ageSummary.average || 0))}</small>
+        </div>
+      `;
+    }
+
+    function renderSummaryView(stats) {
+      const mount = document.getElementById("summaryView");
+      if (!stats.totalResponses) {
+        mount.innerHTML = `<div class="empty">${escapeHtml(UI[currentLang].states.noResponses)}</div>`;
+        return;
+      }
+
+      mount.innerHTML = SECTIONS.map((section) => `
+        <div class="section-label">${escapeHtml(UI[currentLang].sections[section.key])}</div>
+        ${section.ids.map((id) => renderQuestionCard(id, stats)).join("")}
+      `).join("");
+    }
+
+    function fillQuestionSelect() {
+      const select = document.getElementById("questionSelect");
+      select.innerHTML = ALL_QUESTION_IDS.map((id) => `
+        <option value="${id}" ${id === selectedQuestionId ? "selected" : ""}>${escapeHtml(questionLabel(id))}</option>
+      `).join("");
+    }
+
+    function renderQuestionView(stats) {
+      fillQuestionSelect();
+      document.getElementById("questionDetailMount").innerHTML = renderQuestionCard(selectedQuestionId, stats);
+    }
+
+    function fillResponseSelect(stats) {
+      const select = document.getElementById("responseSelect");
+      const responses = stats.responses || [];
+      if (!responses.length) {
+        select.innerHTML = "";
+        return;
+      }
+
+      if (selectedResponseId == null) {
+        selectedResponseId = responses[0].id;
+      }
+
+      select.innerHTML = responses.map((response, index) => `
+        <option value="${response.id}" ${response.id === selectedResponseId ? "selected" : ""}>
+          ${escapeHtml(`${UI[currentLang].meta.response} ${responses.length - index} - ${response.name} - ${formatDateTime(response.submittedAt)}`)}
+        </option>
+      `).join("");
+    }
+
+    function formatIndividualAnswer(id, response) {
+      if (id === "basic_name") return response.name || "-";
+      if (id === "basic_gender") {
+        const base = translateOption("gender", response.genderKey);
+        return response.genderKey === "other" && response.genderOther ? `${base}: ${response.genderOther}` : base;
+      }
+      if (id === "basic_age") return response.age == null ? "-" : String(response.age);
+      if (id === "basic_role") {
+        const base = translateOption("role", response.roleKey);
+        return response.roleKey === "other" && response.roleOther ? `${base}: ${response.roleOther}` : base;
+      }
+
+      const meta = getMeta(id);
+      if (!meta) return "-";
+      const raw = response.answers ? response.answers[id] : null;
+      if (raw == null || raw === "") return "-";
+      if (Array.isArray(raw)) {
+        return raw.map((item) => translateOption(meta.optionsKey, item)).join(", ");
+      }
+      if (meta.type === "text") return String(raw);
+      return translateOption(meta.optionsKey, raw);
+    }
+
+    function renderIndividualView(stats) {
+      const responses = stats.responses || [];
+      fillResponseSelect(stats);
+
+      if (!responses.length) {
+        document.getElementById("individualDetailMount").innerHTML = `<div class="empty">${escapeHtml(UI[currentLang].states.noResponses)}</div>`;
+        return;
+      }
+
+      const response = responses.find((item) => item.id === Number(selectedResponseId)) || responses[0];
+      const order = RESPONSE_ORDER[response.route] || RESPONSE_ORDER.general;
+
+      document.getElementById("individualDetailMount").innerHTML = `
+        <article class="individual-card">
+          <div class="individual-header">
+            <h3>${escapeHtml(response.name)}</h3>
+            <p>
+              ${escapeHtml(UI[currentLang].meta.route)}: ${escapeHtml(translateRoute(response.route))}<br>
+              ${escapeHtml(UI[currentLang].meta.language)}: ${escapeHtml((response.language || "").toUpperCase())}<br>
+              ${escapeHtml(UI[currentLang].meta.submitted)}: ${escapeHtml(formatDateTime(response.submittedAt))}
+            </p>
+          </div>
+          <div class="answer-list">
+            ${order.map((id) => `
+              <div class="answer-item">
+                <strong>${escapeHtml(questionLabel(id))}</strong>
+                <div>${escapeHtml(formatIndividualAnswer(id, response))}</div>
+              </div>
+            `).join("")}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderDashboard(stats) {
+      statsData = stats;
+      document.getElementById("responseChip").textContent = `${UI[currentLang].responseChip}: ${stats.totalResponses || 0}`;
+      renderSummaryCards(stats);
+      renderSummaryView(stats);
+      renderQuestionView(stats);
+      renderIndividualView(stats);
+    }
+
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll(".tab-btn").forEach((button) => {
+        button.classList.toggle("active", button.dataset.view === view);
+      });
+      document.querySelectorAll(".content").forEach((section) => {
+        section.classList.toggle("show", section.id === `${view}View`);
+      });
+    }
+
+    async function loadDashboard(showLoginMessage) {
+      if (!getAdminToken()) {
+        document.getElementById("dashboardShell").style.display = "none";
+        document.getElementById("loginCard").style.display = "";
+        document.getElementById("tabs").style.display = "none";
+        if (showLoginMessage) {
+          setLoginStatus("", "");
+        }
+        return;
+      }
+
+      if (showLoginMessage) {
+        setLoginStatus(UI[currentLang].states.loading, "");
+      }
+
+      try {
+        const response = await fetch(`${CONVEX_HTTP_URL}/getStats`, {
+          headers: authHeaders()
+        });
+        const result = await response.json();
+
+        if (response.status === 401) {
+          clearAdminToken();
+          document.getElementById("dashboardShell").style.display = "none";
+          document.getElementById("loginCard").style.display = "";
+          document.getElementById("tabs").style.display = "none";
+          if (showLoginMessage) {
+            setLoginStatus("", "");
+          }
+          return;
+        }
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || UI[currentLang].states.dashboardFailed);
+        }
+
+        document.getElementById("loginCard").style.display = "none";
+        document.getElementById("dashboardShell").style.display = "";
+        document.getElementById("tabs").style.display = "flex";
+        setLoginStatus("", "");
+        renderDashboard(result.stats);
+        switchView(currentView);
+      } catch (error) {
+        if (showLoginMessage) {
+          setLoginStatus(error.message || UI[currentLang].states.dashboardFailed, "error");
+        }
+      }
+    }
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      setLoginStatus(UI[currentLang].login.loading, "");
+
+      const formData = new FormData(event.currentTarget);
+      try {
+        const response = await fetch(`${CONVEX_HTTP_URL}/adminLogin`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username: formData.get("username"),
+            password: formData.get("password")
+          })
+        });
+
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || UI[currentLang].login.failed);
+        }
+
+        setAdminToken(result.token || "");
+        setLoginStatus("", "");
+        await loadDashboard(false);
+      } catch (error) {
+        setLoginStatus(error.message || UI[currentLang].login.failed, "error");
+      }
+    }
+
+    async function handleLogout() {
+      try {
+        await fetch(`${CONVEX_HTTP_URL}/adminLogout`, {
+          method: "POST",
+          headers: authHeaders()
+        });
+      } catch (error) {
+      }
+
+      clearAdminToken();
+      statsData = null;
+      document.getElementById("dashboardShell").style.display = "none";
+      document.getElementById("tabs").style.display = "none";
+      document.getElementById("loginCard").style.display = "";
+      setLoginStatus(UI[currentLang].login.loggedOut, "success");
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", handleLogin);
+    document.getElementById("refreshBtn").addEventListener("click", () => loadDashboard(false));
+    document.getElementById("logoutBtn").addEventListener("click", handleLogout);
+    document.querySelectorAll(".tab-btn").forEach((button) => {
+      button.addEventListener("click", () => switchView(button.dataset.view));
+    });
+    document.querySelectorAll("[data-lang]").forEach((button) => {
+      button.addEventListener("click", () => {
+        currentLang = button.dataset.lang;
+        applyStaticText();
+        if (statsData) {
+          renderDashboard(statsData);
+          switchView(currentView);
+        }
+      });
+    });
+    document.getElementById("questionSelect").addEventListener("change", (event) => {
+      selectedQuestionId = event.target.value;
+      if (statsData) renderQuestionView(statsData);
+    });
+    document.getElementById("responseSelect").addEventListener("change", (event) => {
+      selectedResponseId = Number(event.target.value);
+      if (statsData) renderIndividualView(statsData);
+    });
+
+    applyStaticText();
+    loadDashboard(false);
+  </script>
+</body>
+</html>

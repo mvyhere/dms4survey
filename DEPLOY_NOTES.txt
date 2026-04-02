@@ -1,0 +1,37 @@
+Deployment notes for Namecheap cPanel + Convex
+
+Convex project URLs already used in the HTML files:
+- Cloud URL: https://amiable-sheep-451.convex.cloud
+- HTTP Actions URL: https://amiable-sheep-451.convex.site
+
+1. Deploy the Convex backend first.
+   - Run in this project:
+     npm init -y
+     npm install convex
+     npx convex dev
+   - This will generate the Convex `_generated` files.
+   - Then deploy:
+     npx convex deploy
+
+2. Set Convex env vars if you want to override the defaults:
+   - ADMIN_USERNAME=admin
+   - ADMIN_PASSWORD=webarebel
+
+3. Upload only the static frontend files to your cPanel subfolder:
+   - index.html
+   - admin.html
+
+4. Open:
+   - index.html for the public survey
+   - admin.html for the admin dashboard
+
+5. Files kept in this folder but not needed for Convex runtime:
+   - api.php
+   - config.php
+   - survey_schema.sql
+
+6. Convex backend source files are in:
+   - convex/schema.ts
+   - convex/survey.ts
+   - convex/admin.ts
+   - convex/http.ts
