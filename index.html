@@ -31,6 +31,21 @@
       font-family: var(--font);
     }
 
+    .admin-link {
+      position: fixed;
+      top: 10px;
+      right: 14px;
+      z-index: 15;
+      font-size: 12px;
+      color: rgba(95, 99, 104, 0.82);
+      text-decoration: none;
+    }
+
+    .admin-link:hover {
+      color: var(--purple);
+      text-decoration: underline;
+    }
+
     .page {
       max-width: 780px;
       margin: 24px auto 56px;
@@ -351,6 +366,8 @@
   </style>
 </head>
 <body>
+  <a class="admin-link" href="admin.html" aria-label="Admin login">admin</a>
+
   <div class="overlay" id="languageOverlay">
     <div class="overlay-card">
       <h2>Select language</h2>
